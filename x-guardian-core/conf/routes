@@ -1,0 +1,2 @@
+GET     /healthcheck                           controllers.HealthcheckController.check()
+POST    /alerts                                controllers.AlertController.create()
