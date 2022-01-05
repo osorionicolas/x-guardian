@@ -1,19 +1,16 @@
 package utils.mongo
 
 import models.AlertType
-import models.errors.{ApplicationError, ParsingError}
 import utils.circe.CirceImplicits
 import utils.mongo.MongoDocumentDecoder.{MongoDocumentDecoder, instance}
+import utils.mongo.MongoTypesConverter.{ObjectIdFieldType, StringFieldType, extractFieldTmp}
 
 object MongoDocumentDecoderInstances extends CirceImplicits {
 
-  val alertTypeInstance: MongoDocumentDecoder[AlertType] = instance[AlertType] { doc =>
-    val result = for {
-      id   <- doc.get("_id").map(_.toString)
-      name <- doc.get("name").map(_.toString)
+  implicit val alertTypeInstance: MongoDocumentDecoder[AlertType] = instance[AlertType] { docFieldMap =>
+    for {
+      id   <- extractFieldTmp[String](docFieldMap, ALERT_TYPE_ID_FIELD, ObjectIdFieldType)
+      name <- extractFieldTmp[String](docFieldMap, ALERT_TYPE_NAME_FIELD, StringFieldType)
     } yield AlertType(id, name)
-
-    // TODO improve error parsing message (maybe add either instead of option)
-    result.fold[Either[ApplicationError, AlertType]](Left(ParsingError("error")))(entity => Right(entity))
   }
 }

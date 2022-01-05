@@ -1,5 +1,7 @@
 package models.errors
 
+import models.errors.validations.ValidationErrorCode
+
 trait ApplicationError
 
 case class ExecutionError(description: String, t: Throwable) extends ApplicationError
@@ -21,3 +23,5 @@ case class ClientError(errorMessage: String) extends ApplicationError
 case class RemoteApiError(errorMessage: String) extends ApplicationError
 
 case class ParsingError(errorMessage: String) extends ApplicationError
+
+case class InvalidParameterError(code: ValidationErrorCode, parameter: String)
