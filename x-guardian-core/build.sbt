@@ -19,5 +19,7 @@ libraryDependencies ++= Seq(
   "io.circe"     %% "circe-generic-extras" % circeVersion,
   // mongo
   "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
+  // misc
+  "io.netty" % "netty-all" % "4.1.72.Final",
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 )

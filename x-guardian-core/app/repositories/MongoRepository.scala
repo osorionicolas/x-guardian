@@ -16,12 +16,14 @@ import org.mongodb.scala.model.Sorts._
 @Singleton
 class MongoRepository @Inject()(mongoDatabase: MongoDatabase)(implicit @Named(MONGO_DISPATCHER) ec: ExecutionContext) {
 
-  def test(): ApplicationResult[MongoCollection[scala.Document]] =
-    Future {
-      mongoDatabase.getCollection(ALERT_TYPE_COLLECTION)
-    }.map { result =>
-      // FIXME issue with observables
-      Right(result)
-    }
+  def test(): ApplicationResult[Seq[scala.Document]] =
+    mongoDatabase
+      .getCollection(ALERT_TYPE_COLLECTION)
+      .find(Document())
+      .toFuture()
+      .map { result =>
+        // FIXME issue with observables
+        Right(result)
+      }
 
 }
