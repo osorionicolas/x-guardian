@@ -1,6 +1,6 @@
 package controllers
 
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
 import services.AlertService
 
 import javax.inject.{Inject, Singleton}
@@ -11,5 +11,9 @@ class AlertController @Inject()(val controllerComponents: ControllerComponents, 
   implicit ec: ExecutionContext
 ) extends BaseController {
 
+  // TODO
   def create() = Action.async(_ => Future(Ok))
+
+  // TODO
+  def getNearest(location: String): Action[AnyContent] = ???
 }

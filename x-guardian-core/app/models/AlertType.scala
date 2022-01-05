@@ -1,3 +1,3 @@
 package models
 
-case class AlertType(id: Int, name: String)
+case class AlertType(id: String, name: String)

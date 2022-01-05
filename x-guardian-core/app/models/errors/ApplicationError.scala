@@ -19,3 +19,5 @@ case class BadRequestError(errorMessage: String) extends ApplicationError
 case class ClientError(errorMessage: String) extends ApplicationError
 
 case class RemoteApiError(errorMessage: String) extends ApplicationError
+
+case class ParsingError(errorMessage: String) extends ApplicationError
