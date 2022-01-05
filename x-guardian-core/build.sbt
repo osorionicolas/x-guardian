@@ -7,8 +7,17 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.7"
 
+val circeVersion     = "0.12.2"
+
 libraryDependencies ++= Seq(
   guice,
-  "org.mongodb.scala" %% "mongo-scala-driver" % "4.2.3",
+  // json
+  "com.dripower" %% "play-circe"           % "2814.1",
+  "io.circe"     %% "circe-core"           % circeVersion,
+  "io.circe"     %% "circe-generic"        % circeVersion,
+  "io.circe"     %% "circe-parser"         % circeVersion,
+  "io.circe"     %% "circe-generic-extras" % circeVersion,
+  // mongo
+  "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 )

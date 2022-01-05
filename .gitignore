@@ -13,3 +13,7 @@ project
 .vscode/
 .metals/
 .bloop/
+
+# IntelliJ
+
+.idea/
