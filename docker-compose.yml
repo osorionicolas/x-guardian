@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+
+  x-guardian-core:
+    image: xmentor/x-guardian-core:latest
+    restart: always
+    environment:
+        - "MONGO_URL=mongodb+srv://xmentor:${PASSWORD}x-mentor.gs4ad.mongodb.net/${MONGO_DATABASE}?retryWrites=true&w=majority"
+        - "MONGO_DATABASE=${MONGO_DATABASE}"
+    ports:
+      - 9000:9000
+    entrypoint: ["/opt/docker/conf/wrapper.sh"]
+      
+  x-guardian-client:
+    image: xmentor/x-guardian-client:latest
+    ports:
+      - 3000:80
+    depends_on:
+      - x-guardian-core
+      
+volumes:
+  ivy2:
+    driver_opts:
+      o: bind
+      type: none
+      device: $HOME/.ivy2
+  sbt:
+    driver_opts:
+      o: bind
+      type: none
+      device: $HOME/.sbt
+      
