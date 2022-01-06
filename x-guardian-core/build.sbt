@@ -1,13 +1,13 @@
 name := """x-guardian-core"""
-organization := "com.xguardian"
+organization := "xmentor"
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val root = (project in file(".")).enablePlugins(PlayScala, sbtdocker.DockerPlugin)
 
 scalaVersion := "2.13.7"
 
-val circeVersion     = "0.12.2"
+lazy val circeVersion     = "0.12.2"
 
 libraryDependencies ++= Seq(
   guice,
@@ -23,3 +23,24 @@ libraryDependencies ++= Seq(
   "io.netty" % "netty-all" % "4.1.72.Final",
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 )
+
+// imageName:Tag value
+imageNames in docker := Seq(
+  ImageName(s"${organization.value}/${name.value}:latest")
+)
+
+dockerfile in docker := {
+  val appDir: File = stage.value
+  val targetDir = "/opt/docker"
+
+  new Dockerfile {
+    from("openjdk:8-jre-slim")
+    expose(9000)
+    run("apt", "update")
+    run("apt", "-y", "upgrade")
+    run("apt", "-y", "install", "curl")
+    copy(appDir, targetDir)
+    run("chmod", "-R", "755", s"$targetDir")
+    entryPoint(s"$targetDir/conf/wrapper.sh")
+  }
+}
