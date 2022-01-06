@@ -1,11 +1,11 @@
 package controllers
 
-import controllers.helpers.Decodable
-import io.circe.syntax._
-import models.CreateAlertDTO
+import controllers.helpers.{Decodable, ErrorToResultConverter}
+import io.circe.syntax.EncoderOps
 import models.converters.CreateAlertDTOOps._
+import models.{CreateAlertDTO, Location}
 import play.api.Logging
-import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
+import play.api.mvc.{BaseController, ControllerComponents}
 import services.AlertService
 import utils.MapMarkerContext._
 
@@ -18,17 +18,32 @@ class AlertController @Inject()(val controllerComponents: ControllerComponents, 
   implicit ec: ExecutionContext
 ) extends BaseController
     with Decodable
-    with Logging {
+    with Logging
+    with ErrorToResultConverter {
 
   def create() = Action.async(decode[CreateAlertDTO]) { implicit request =>
     implicit val mmc = fromRequest(MMap(USER_ID -> request.body.userId))
+    logger.info("Registering alert")
     alertService.create(request.body.toDomain()).map {
+      case Left(error) =>
+        handleApplicationError(error)
       case Right(alert) =>
         logger.info(s"Alert created successfully: $alert")
-        Created(alert.asJson)
+        Created
     }
   }
 
-  // TODO
-  def getNearest(location: String): Action[AnyContent] = ???
+  def emergencies(userId: String, latitude: Long, longitude: Long) = Action.async { implicit request =>
+    implicit val mmc =
+      fromRequest(MMap(USER_ID -> userId, LATITUDE -> latitude.toString, LONGITUDE -> longitude.toString))
+    val location = Location(latitude, longitude)
+    logger.info("Retrieving emergencies nearest to specific location")
+    alertService.emergencies(location).map {
+      case Left(error) =>
+        handleApplicationError(error)
+      case Right(emergencies) =>
+        logger.info(s"Following emergencies were reported near location: $location")
+        Ok(location.asJson)
+    }
+  }
 }

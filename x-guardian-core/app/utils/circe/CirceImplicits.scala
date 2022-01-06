@@ -4,22 +4,20 @@ import io.circe.generic.extras.Configuration
 import io.circe.generic.extras.semiauto._
 import io.circe.{Decoder, Encoder, Printer}
 import models._
+import utils.dateutils.dateTimeFormatter
 
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import scala.util.{Failure, Success, Try}
 
 trait CirceImplicits {
   implicit val customPrinter: Printer      = Printer.noSpaces.copy(dropNullValues = true)
   implicit val customConfig: Configuration = Configuration.default.withSnakeCaseMemberNames
 
-  val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-
   implicit val localDateTimeEncoder: Encoder[LocalDateTime] =
-    Encoder.encodeString.contramap[LocalDateTime](_.format(formatter))
+    Encoder.encodeString.contramap[LocalDateTime](_.format(dateTimeFormatter))
 
   implicit val localDateDecoder: Decoder[LocalDateTime] = Decoder.decodeString.emap[LocalDateTime](str => {
-    Try(LocalDateTime.parse(str, formatter)) match {
+    Try(LocalDateTime.parse(str, dateTimeFormatter)) match {
       case Failure(exception) => Left(exception.getMessage)
       case Success(value)     => Right(value)
     }

@@ -17,8 +17,10 @@ class MapMarkerContext(val map: MMap[String, String], val uow: String) extends M
 }
 
 object MapMarkerContext {
-  val UOW     = "uow"
-  val USER_ID = "userId"
+  val UOW       = "uow"
+  val USER_ID   = "userId"
+  val LATITUDE  = "latitude"
+  val LONGITUDE = "longitude"
 
   private def newUow: String = UUID.randomUUID().toString
 
