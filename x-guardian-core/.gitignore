@@ -7,13 +7,13 @@ target
 /.project
 /.settings
 /RUNNING_PID
-project
+project/project
 
 # metals
 .vscode/
 .metals/
 .bloop/
-
+metals.sbt
 # IntelliJ
 
 .idea/
