@@ -4,5 +4,3 @@ POST    /alerts                                controllers.AlertController.creat
 GET     /alerts/:location                      controllers.AlertController.getNearest(location: String)
 
 GET     /alert-types                           controllers.AlertTypeController.getAll()
-
-GET     /test                                  controllers.TestController.test()

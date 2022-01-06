@@ -28,15 +28,4 @@ class MongoRepository @Inject()(mongoDatabase: MongoDatabase)(implicit @Named(MO
         }
       }
       .map(Right(_))
-
-  def test(): ApplicationResult[Seq[scala.Document]] =
-    mongoDatabase
-      .getCollection(ALERT_TYPE_COLLECTION)
-      .find(Document())
-      .toFuture()
-      .map { result =>
-        // FIXME issue with observables
-        Right(result)
-      }
-
 }

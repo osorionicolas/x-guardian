@@ -1,14 +1,15 @@
 package services
 
-import akka.Done
 import global.ApplicationResult
-import models.Alert
+import models.{Alert, CreateAlert}
 import repositories.MongoRepository
+import utils.MapMarkerContext
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AlertService @Inject()(mongoRepository: MongoRepository) {
 
-  def create(alert: Alert): ApplicationResult[Done] = ???
+  // TODO
+  def create(alert: CreateAlert)(implicit mmc: MapMarkerContext): ApplicationResult[Alert] = ???
 }
