@@ -1,15 +1,35 @@
 package utils.circe
 
-import io.circe.Printer
 import io.circe.generic.extras.Configuration
-import io.circe.generic.extras.semiauto.{deriveConfiguredDecoder, deriveConfiguredEncoder}
+import io.circe.generic.extras.semiauto._
+import io.circe.{Decoder, Encoder, Printer}
 import models._
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import scala.util.{Failure, Success, Try}
 
 trait CirceImplicits {
   implicit val customPrinter: Printer      = Printer.noSpaces.copy(dropNullValues = true)
   implicit val customConfig: Configuration = Configuration.default.withSnakeCaseMemberNames
 
-  // TODO localdatetime enc/dec
+  val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+  implicit val localDateTimeEncoder: Encoder[LocalDateTime] =
+    Encoder.encodeString.contramap[LocalDateTime](_.format(formatter))
+
+  implicit val localDateDecoder: Decoder[LocalDateTime] = Decoder.decodeString.emap[LocalDateTime](str => {
+    Try(LocalDateTime.parse(str, formatter)) match {
+      case Failure(exception) => Left(exception.getMessage)
+      case Success(value)     => Right(value)
+    }
+  })
+
+  implicit val coordsEncoder = deriveConfiguredEncoder[Coords]
+  implicit val coordsDecoder = deriveConfiguredDecoder[Coords]
+
+  implicit val locationEncoder = deriveConfiguredEncoder[Location]
+  implicit val locationDecoder = deriveConfiguredDecoder[Location]
 
   implicit val alertTypeEncoder = deriveConfiguredEncoder[AlertType]
   implicit val alertTypeDecoder = deriveConfiguredDecoder[AlertType]
@@ -20,9 +40,6 @@ trait CirceImplicits {
   implicit val createAlertEncoder = deriveConfiguredEncoder[CreateAlert]
   implicit val createAlertDecoder = deriveConfiguredDecoder[CreateAlert]
 
-  implicit val coordsEncoder = deriveConfiguredEncoder[Coords]
-  implicit val coordsDecoder = deriveConfiguredDecoder[Coords]
-
-  implicit val locationEncoder = deriveConfiguredEncoder[Location]
-  implicit val locationDecoder = deriveConfiguredDecoder[Location]
+  implicit val createAlertDtoEncoder = deriveConfiguredEncoder[CreateAlertDTO]
+  implicit val createAlertDtoDecoder = deriveConfiguredDecoder[CreateAlertDTO]
 }

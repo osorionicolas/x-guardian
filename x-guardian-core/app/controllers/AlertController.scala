@@ -2,7 +2,8 @@ package controllers
 
 import controllers.helpers.Decodable
 import io.circe.syntax._
-import models.CreateAlert
+import models.CreateAlertDTO
+import models.converters.CreateAlertDTOOps._
 import play.api.Logging
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
 import services.AlertService
@@ -19,9 +20,9 @@ class AlertController @Inject()(val controllerComponents: ControllerComponents, 
     with Decodable
     with Logging {
 
-  def create() = Action.async(decode[CreateAlert]) { implicit request =>
+  def create() = Action.async(decode[CreateAlertDTO]) { implicit request =>
     implicit val mmc = fromRequest(MMap(USER_ID -> request.body.userId))
-    alertService.create(request.body).map {
+    alertService.create(request.body.toDomain()).map {
       case Right(alert) =>
         logger.info(s"Alert created successfully: $alert")
         Created(alert.asJson)
