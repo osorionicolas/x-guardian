@@ -6,8 +6,8 @@ services:
     image: xmentor/x-guardian-core:latest
     restart: always
     environment:
-        - "MONGO_URL=mongodb+srv://xmentor:X-Mentor2021@x-mentor.gs4ad.mongodb.net/xguardian?retryWrites=true&w=majority"
-        - "MONGO_DATABASE=xguardian"
+        - "MONGO_URL=mongodb+srv://xmentor:${PASSWORD}x-mentor.gs4ad.mongodb.net/${MONGO_DATABASE}?retryWrites=true&w=majority"
+        - "MONGO_DATABASE=${MONGO_DATABASE}"
     ports:
       - 9000:9000
     entrypoint: ["/opt/docker/conf/wrapper.sh"]
