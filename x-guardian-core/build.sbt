@@ -20,6 +20,7 @@ libraryDependencies ++= Seq(
   // mongo
   "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
   // misc
+  "net.logstash.logback" % "logstash-logback-encoder" % "5.1",
   "io.netty" % "netty-all" % "4.1.72.Final",
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 )

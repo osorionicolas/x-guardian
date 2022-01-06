@@ -1,21 +1,20 @@
 package repositories
 
+import akka.Done
 import global.ApplicationResult
 import global.Configurations.MONGO_DISPATCHER
-import models.AlertType
-import org.mongodb.scala.{MongoCollection, MongoDatabase}
+import org.mongodb.scala.{MongoDatabase, _}
+import play.api.Logging
+import utils.mongo.MongoDocumentDecoder._
+import utils.mongo.MongoDocumentEncoder.MongoDocumentEncoder
+import utils.mongo.MongoDocumentEncoderSyntax.MongoDocumentEncoderOps
 
 import javax.inject.{Inject, Named, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
-import org.mongodb.scala
-import org.mongodb.scala._
-import org.mongodb.scala.model.Filters._
-import org.mongodb.scala.model.Projections._
-import org.mongodb.scala.model.Sorts._
-import utils.mongo.MongoDocumentDecoder._
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class MongoRepository @Inject()(mongoDatabase: MongoDatabase)(implicit @Named(MONGO_DISPATCHER) ec: ExecutionContext) {
+class MongoRepository @Inject()(mongoDatabase: MongoDatabase)(implicit @Named(MONGO_DISPATCHER) ec: ExecutionContext)
+    extends Logging {
 
   def getCollection[T: MongoDocumentDecoder](collection: String): ApplicationResult[Seq[T]] =
     mongoDatabase
@@ -29,14 +28,13 @@ class MongoRepository @Inject()(mongoDatabase: MongoDatabase)(implicit @Named(MO
       }
       .map(Right(_))
 
-  def test(): ApplicationResult[Seq[scala.Document]] =
+  def insert[T: MongoDocumentEncoder](entity: T, collection: String): ApplicationResult[Done] =
     mongoDatabase
-      .getCollection(ALERT_TYPE_COLLECTION)
-      .find(Document())
+      .getCollection(collection)
+      .insertOne(entity.asDocument)
       .toFuture()
-      .map { result =>
-        // FIXME issue with observables
-        Right(result)
+      .map { _ =>
+        logger.debug("Insert success")
+        Right(Done)
       }
-
 }
