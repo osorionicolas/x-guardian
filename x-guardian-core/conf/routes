@@ -1,8 +1,6 @@
 GET     /healthcheck                           controllers.HealthcheckController.check()
 
 POST    /alerts                                controllers.AlertController.create()
-GET     /alerts/:location                      controllers.AlertController.getNearest(location: String)
+GET     /emergencies/:userId                   controllers.AlertController.emergencies(userId: String, latitude: Long, longitude: Long)
 
 GET     /alert-types                           controllers.AlertTypeController.getAll()
-
-GET     /test                                  controllers.TestController.test()
