@@ -23,8 +23,8 @@ trait CirceImplicits {
     }
   })
 
-  implicit val coordsEncoder = deriveConfiguredEncoder[Coords]
-  implicit val coordsDecoder = deriveConfiguredDecoder[Coords]
+  implicit val alertTypeDTOEncoder = deriveConfiguredEncoder[AlertTypeDTO]
+  implicit val alertTypeDTODecoder = deriveConfiguredDecoder[AlertTypeDTO]
 
   implicit val locationEncoder = deriveConfiguredEncoder[Location]
   implicit val locationDecoder = deriveConfiguredDecoder[Location]

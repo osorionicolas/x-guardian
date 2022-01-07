@@ -11,7 +11,7 @@ object CreateAlertDTOOps {
 
     def toDomain() =
       CreateAlert(
-        `type` = createAlertDTO.`type`.id.toInt,
+        alert = createAlertDTO.alert,
         userId = createAlertDTO.userId,
         createdAt = LocalDateTime.parse(createAlertDTO.createdAt, formatter),
         location = createAlertDTO.location

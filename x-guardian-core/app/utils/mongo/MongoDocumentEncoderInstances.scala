@@ -13,14 +13,15 @@ object MongoDocumentEncoderInstances {
 
   implicit val createAlertDocEncoderInstance: MongoDocumentEncoder[CreateAlert] = instance[CreateAlert] { createAlert =>
     Document(
-      "type"       -> createAlert.`type`,
+      "alert" -> Document(
+        "id"   -> createAlert.alert.id,
+        "name" -> createAlert.alert.name
+      ),
       "user_id"    -> createAlert.userId,
       "created_at" -> createAlert.createdAt.format(dateTimeFormatter),
       "location" -> Document(
-        "coords" -> Document(
-          "latitude"  -> createAlert.location.coords.latitude,
-          "longitude" -> createAlert.location.coords.longitude
-        )
+        "latitude"  -> createAlert.location.latitude,
+        "longitude" -> createAlert.location.longitude
       )
     )
   }
