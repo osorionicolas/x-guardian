@@ -26,11 +26,11 @@ libraryDependencies ++= Seq(
 )
 
 // imageName:Tag value
-imageNames in docker := Seq(
+docker / imageNames := Seq(
   ImageName(s"${organization.value}/${name.value}:latest")
 )
 
-dockerfile in docker := {
+docker / dockerfile := {
   val appDir: File = stage.value
   val targetDir = "/opt/docker"
 

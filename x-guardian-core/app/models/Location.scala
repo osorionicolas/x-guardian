@@ -1,3 +1,3 @@
 package models
 
-case class Location(latitude: Long, longitude: Long)
+case class Location(latitude: Float, longitude: Float)
