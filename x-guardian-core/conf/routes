@@ -1,6 +1,6 @@
 GET     /healthcheck                           controllers.HealthcheckController.check()
 
 POST    /alerts                                controllers.AlertController.create()
-GET     /emergencies/:userId                   controllers.AlertController.emergencies(userId: String, latitude: Long, longitude: Long)
+GET     /emergencies                           controllers.AlertController.emergencies(latitude: Long, longitude: Long)
 
 GET     /alert-types                           controllers.AlertTypeController.getAll()
