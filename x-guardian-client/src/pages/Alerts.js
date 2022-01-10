@@ -16,6 +16,11 @@ export const Alerts = () => {
                 console.log(data)
                 setAlerts(data)
             })
+
+            /*axios(`${API_URL}/emergencies/45111333`).then(response => {
+                const data = response.data
+                console.log(data)
+            })*/
         }
         catch(error){
             console.log(error)          
@@ -26,7 +31,6 @@ export const Alerts = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const coords = (({ latitude, longitude }) => ({ latitude, longitude }))(position.coords)
-                console.log(coords)
                 setCoords(coords)
             },
             (error) => {

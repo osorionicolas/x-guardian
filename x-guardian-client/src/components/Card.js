@@ -1,33 +1,43 @@
-import {
-  Box, Button, Icon
-} from "@chakra-ui/react"
+import { Box, Button, Icon, useToast } from "@chakra-ui/react"
 import axios from 'axios'
 import { API_URL } from '../environment'
-import { MdOutlinePets } from 'react-icons/md'
-import { GiRobber } from 'react-icons/gi'
-import { RiFloodFill } from 'react-icons/ri'
-import { BsLightbulbOffFill } from 'react-icons/bs'
+import * as icons from './react-icons-proxy.js'
 
 export default function Card({alert, coords}) {
   const { id, name, icon } = alert
+  const toast = useToast()
 
-  const createAlert = (alert) => {
+  const createAlert = () => {
     axios.post(`${API_URL}/alerts`, {
-      type: {
-        id: alert.id,
-        name: alert.name,
+      alert: {
+        id: id,
+        name: name,
       },
-      user_id: 1,
+      user_id: "1",
       location: coords,
       created_at: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+    }).then(res => {
+      let message = 'Alert reported.'
+      let status = 'success'
+      if(res.status !== 201){
+        message = 'Something went wrong.'
+        status = 'error'
+      }
+
+      toast({
+        title: message,
+        status: status,
+        duration: 3000,
+        isClosable: true,
+      })
     })
   }
 
   const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 
   return (
-    <Box maxW='sm' borderWidth='1px' borderRadius='lg' display='flex' alignItems='center' flexDirection='column' padding='42px 54px 32px 54px'>
-      <Icon as={icon} boxSize={28}/>
+    <Box maxW='sm' borderWidth='1px' borderRadius='lg' display='flex' alignItems='center' flexDirection='column' padding='36px 36px 32px 36px'>
+      <Icon as={icons[icon]} boxSize={28}/>
 
       <Box pt='6' pb='12'>
         <Box
