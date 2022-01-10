@@ -20,8 +20,8 @@ object MongoDocumentEncoderInstances {
       "user_id"    -> createAlert.userId,
       "created_at" -> createAlert.createdAt.format(dateTimeFormatter),
       "location" -> Document(
-        "latitude"  -> createAlert.location.latitude,
-        "longitude" -> createAlert.location.longitude
+        "type"        -> "Point",
+        "coordinates" -> List(createAlert.location.latitude, createAlert.location.longitude)
       )
     )
   }
