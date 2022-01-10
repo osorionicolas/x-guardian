@@ -32,18 +32,4 @@ class AlertController @Inject()(val controllerComponents: ControllerComponents, 
         Created
     }
   }
-
-  def emergencies(latitude: Double, longitude: Double) = Action.async { implicit request =>
-    implicit val mmc =
-      fromRequest(MMap(LATITUDE -> latitude.toString, LONGITUDE -> longitude.toString))
-    val location = Location(latitude, longitude)
-    logger.info("Retrieving emergencies nearest to specific location")
-    alertService.emergencies(location).map {
-      case Left(error) =>
-        handleApplicationError(error)
-      case Right(emergencies) =>
-        logger.info(s"Following emergencies were reported near location: $location")
-        Ok(location.asJson)
-    }
-  }
 }
