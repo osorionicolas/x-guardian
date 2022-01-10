@@ -33,7 +33,7 @@ class AlertController @Inject()(val controllerComponents: ControllerComponents, 
     }
   }
 
-  def emergencies(latitude: Long, longitude: Long) = Action.async { implicit request =>
+  def emergencies(latitude: Double, longitude: Double) = Action.async { implicit request =>
     implicit val mmc =
       fromRequest(MMap(LATITUDE -> latitude.toString, LONGITUDE -> longitude.toString))
     val location = Location(latitude, longitude)
