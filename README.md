@@ -2,13 +2,13 @@
 
 Neigborhood alert webapp backed by [Mongo](https://www.mongodb.com/cloud)
 
-The app allows you to report different kind of alerts
+The app allows you to report different kind of alerts such as `outage`, `crime`, `stray` and `flood`.
 
-`TODO`
+![Alt text](diagrams/alert.png?raw=true "Alert Screen")
 
-Those alert are sent to backend 
+Reported alerts are sent to backend 
 
-`TODO explain dashboards`
+![Alt text](diagrams/dashboards.png?raw=true "Dashboards Screen")
 
 # Architecture
 
