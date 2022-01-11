@@ -32,4 +32,4 @@ The high level architecture is very simple and relies strongly on [Mongo Atlas](
 docker-compose up
 ```
 
-It runs the frontend on `localhost:3000` and the backend on `localhost:9000`
+It runs the frontend on http://localhost:3000 and the backend on http://localhost:9000
