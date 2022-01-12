@@ -20,16 +20,17 @@ libraryDependencies ++= Seq(
   // mongo
   "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
   // misc
+  "net.logstash.logback" % "logstash-logback-encoder" % "5.1",
   "io.netty" % "netty-all" % "4.1.72.Final",
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 )
 
 // imageName:Tag value
-imageNames in docker := Seq(
+docker / imageNames := Seq(
   ImageName(s"${organization.value}/${name.value}:latest")
 )
 
-dockerfile in docker := {
+docker / dockerfile := {
   val appDir: File = stage.value
   val targetDir = "/opt/docker"
 

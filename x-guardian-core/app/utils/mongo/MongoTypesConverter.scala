@@ -29,6 +29,7 @@ object MongoTypesConverter {
   case object ObjectIdFieldType extends FieldType
   case object StringFieldType   extends FieldType
   case object BooleanFieldType  extends FieldType
+  case object IntFieldType      extends FieldType
 
   /**
     * Extract a field from a mongo Document and convert it to Scala type.
@@ -46,11 +47,13 @@ object MongoTypesConverter {
 
     val maybeConvertedValue = fieldType match {
       case ObjectIdFieldType =>
-        maybeBsonValue.map(_.asObjectId().getValue().toString)
+        maybeBsonValue.map(_.asObjectId().getValue.toString)
       case StringFieldType =>
         maybeBsonValue.map(_.asString().getValue)
       case BooleanFieldType =>
         maybeBsonValue.map(_.asBoolean().getValue)
+      case IntFieldType =>
+        maybeBsonValue.map(_.asInt32().getValue)
     }
 
     toEitherResult(maybeConvertedValue, field).asInstanceOf[EitherResult[T]]
