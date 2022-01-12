@@ -6,20 +6,21 @@ services:
     container_name: x-guardian-core
     image: xmentor/x-guardian-core:latest
     restart: always
+    init: true
     environment:
-        - "MONGO_URL=mongodb+srv://xmentor:${PASSWORD}@${MONGO_CLUSTER}.gs4ad.mongodb.net/test"
-        - "MONGO_DATABASE=${MONGO_DB}"
+        - "MONGO_URL=mongodb+srv://xmentor:X-Mentor2021@x-guardian.gs4ad.mongodb.net/test"
+        - "MONGO_DATABASE=xguardian"
     ports:
       - 9000:9000
     entrypoint: ["/opt/docker/conf/wrapper.sh"]
       
-  #x-guardian-client:
-  #  container_name: x-guardian-client
-  #  image: xmentor/x-guardian-client:latest
-  #  ports:
-  #    - 3000:80
-  #  depends_on:
-  #    - x-guardian-core
+  x-guardian-client:
+    container_name: x-guardian-client
+    image: xmentor/x-guardian-client:latest
+    ports:
+      - 3000:80
+    depends_on:
+      - x-guardian-core
       
 volumes:
   ivy2:
