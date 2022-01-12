@@ -1,9 +1,8 @@
 package controllers
 
 import controllers.helpers.{Decodable, ErrorToResultConverter}
-import io.circe.syntax.EncoderOps
+import models.CreateAlertDTO
 import models.converters.CreateAlertDTOOps._
-import models.{CreateAlertDTO, Location}
 import play.api.Logging
 import play.api.mvc.{BaseController, ControllerComponents}
 import services.AlertService
@@ -30,20 +29,6 @@ class AlertController @Inject()(val controllerComponents: ControllerComponents, 
       case Right(alert) =>
         logger.info(s"Alert created successfully: $alert")
         Created
-    }
-  }
-
-  def emergencies(latitude: Double, longitude: Double) = Action.async { implicit request =>
-    implicit val mmc =
-      fromRequest(MMap(LATITUDE -> latitude.toString, LONGITUDE -> longitude.toString))
-    val location = Location(latitude, longitude)
-    logger.info("Retrieving emergencies nearest to specific location")
-    alertService.emergencies(location).map {
-      case Left(error) =>
-        handleApplicationError(error)
-      case Right(emergencies) =>
-        logger.info(s"Following emergencies were reported near location: $location")
-        Ok(location.asJson)
     }
   }
 }
